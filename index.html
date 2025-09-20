@@ -1,22 +1,243 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <title>HSN ALFAIFI</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hassan ALfaifi</title>
+  <meta name="description" content="بورتفوليو شخصي لعرض المشاريع والمهارات." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; /* dark navy */
+      --card:#0b1220;
+      --accent:#06b6d4; /* cyan */
+      --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.03);
+      --radius:14px;
+      --max-width:1100px;
+      font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:linear-gradient(180deg,var(--bg), #071023 140%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.5;
+      padding:32px 20px;
+      display:flex;justify-content:center;
+    }
+    .container{width:100%;max-width:var(--max-width)}
+
+    /* header */
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:#071023}
+    .brand h1{font-size:20px;margin:0}
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
+    nav a:hover{color:#fff;background:var(--glass)}
+    .cta{background:linear-gradient(90deg,var(--accent),#7c3aed);padding:8px 14px;border-radius:10px;color:#021024;text-decoration:none;font-weight:600}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:center;margin-bottom:28px}
+    .intro{padding:22px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border-radius:var(--radius);box-shadow:0 6px 20px rgba(2,6,23,0.6)}
+    .intro h2{margin:0 0 8px 0;font-size:28px}
+    .intro p{margin:0;color:var(--muted)}
+    .skills{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .chip{background:var(--card);padding:8px 10px;border-radius:999px;color:var(--muted);font-weight:600}
+
+    .profile-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .avatar{width:160px;height:160px;border-radius:20px;background:linear-gradient(135deg,#1e293b,#0f1724);display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:var(--accent)}
+    .meta{display:flex;gap:8px;flex-direction:column;align-items:center}
+    .meta small{color:var(--muted)}
+
+    /* projects */
+    .section{margin-bottom:26px}
+    .section h3{margin:0 0 12px 0}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .project{background:var(--card);padding:14px;border-radius:12px;min-height:140px;display:flex;flex-direction:column;justify-content:space-between}
+    .project h4{margin:0 0 8px 0}
+    .project p{margin:0;color:var(--muted);font-size:14px}
+    .project .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .tag{background:var(--glass);padding:6px 8px;border-radius:8px;font-size:12px;color:var(--muted)}
+
+    /* contact */
+    .contact{display:flex;gap:14px;flex-wrap:wrap}
+    .contact form{flex:1;min-width:260px;background:var(--card);padding:14px;border-radius:12px}
+    .field{display:flex;flex-direction:column;margin-bottom:10px}
+    label{font-size:13px;color:var(--muted);margin-bottom:6px}
+    input,textarea{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:10px;border-radius:8px;color:inherit}
+    textarea{min-height:100px}
+    button{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+
+    /* footer */
+    footer{margin-top:24px;color:var(--muted);text-align:center;padding:18px}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr}
+      .grid{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width:640px){
+      body{padding:18px}
+      .grid{grid-template-columns:1fr}
+      nav{display:none}
+    }
+
+    /* subtle animations */
+    .project, .intro, .profile-card{transform:translateY(6px);opacity:0;animation:fadeUp .6s ease forwards}
+    .project{animation-delay:0.05s}
+    .intro{animation-delay:0.02s}
+    .profile-card{animation-delay:0.04s}
+    @keyframes fadeUp{to{transform:none;opacity:1}}
+  </style>
 </head>
-
 <body>
-  <h1>Angela Yu's Portfolio</h1>
-  <h2>I'm a Web Developer</h2>
-  <hr />
-  <h3><a href="./public/movie-ranking.html">Movie Ranking Project</a></h3>
-  <img src="./assets/images/movie-ranking.png" height="200" alt="movie ranking project preview"/>
-  <h3><a href="./public/birthday-invite.html">Birthday Invite Project</a></h3>
-  <img src="./assets/images/birthday-invite.png" height="200" alt="birthday invite project preview"/>
-  <hr />
-  <a href="./public/about.html">About Me</a>
-  <a href="./public/contact.html">Contact Me</a>
-</body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">ب</div>
+        <div>
+          <h1>عبدالله — مطور واجهات</h1>
+          <small style="color:var(--muted)">مصمم / مطور واجهات أمامية</small>
+        </div>
+      </div>
+      <nav aria-label="قائمة التنقل">
+        <a href="#about">عنّي</a>
+        <a href="#projects">المشاريع</a>
+        <a href="#contact">تواصل</a>
+        <a class="cta" href="#contact">توظيفي</a>
+      </nav>
+    </header>
 
+    <main>
+      <section class="hero">
+        <div class="intro" id="about">
+          <h2>مرحباً! أنا ا\حسن الفيفي</h2>
+          <p>مطور واجهات أمامية أرتب واجهات بسيطة وسريعة وسهلة الاستخدام. أحب بناء واجهات تركز على البساطة والأداء وتجربة المستخدم.</p>
+
+          <div class="skills" aria-hidden>
+            <div class="chip">HTML</div>
+            <div class="chip">CSS</div>
+            <div class="chip">JavaScript</div>
+            <div class="chip">React</div>
+            <div class="chip">UI/UX</div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <a href="#projects" style="text-decoration:none;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px 12px;border-radius:10px;color:var(--muted)">عرض المشاريع</a>
+            <a class="cta" href="#contact">تواصل معي</a>
+          </div>
+        </div>
+
+        <aside class="profile-card" aria-label="بطاقة شخصية">
+          <div class="avatar">ع</div>
+          <div class="meta">
+            <strong>حسن الفيفي</strong>
+            <small>من فيفاء — مهندس شبكات</small>
+          </div>
+          <div style="width:100%;display:flex;justify-content:space-between;gap:8px;margin-top:8px">
+            <div style="text-align:center">
+              <div style="font-weight:700">5+</div>
+              <small style="color:var(--muted)">سنوات خبرة</small>
+            </div>
+            <div style="text-align:center">
+              <div style="font-weight:700">20+</div>
+              <small style="color:var(--muted)">مشروع مكتمل</small>
+            </div>
+            <div style="text-align:center">
+              <div style="font-weight:700">100%</div>
+              <small style="color:var(--muted)">التسليم في الوقت</small>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="projects">
+        <h3>مشاريعي</h3>
+        <div class="grid">
+          <article class="project">
+            <div>
+              <h4>موقع الجمعية</h4>
+              <p>نظام بسيط لتسجيل المستفيدين وعرض المشاريع مع لوحة تحكم للإدمن.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JavaScript</span>
+            </div>
+          </article>
+
+          <article class="project">
+            <div>
+              <h4>صفحة منتجات</h4>
+              <p>واجهة تسوق بسيطة وسريعة مع تصفح مرن وتجربة مستخدم مريحة.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">React</span>
+              <span class="tag">API</span>
+            </div>
+          </article>
+
+          <article class="project">
+            <div>
+              <h4>لوحة إدارية</h4>
+              <p>لوحة لإدارة بيانات المستخدمين والتقارير مع فلترة متقدمة.</p>
+            </div>
+            <div class="tags">
+              <span class="tag">Dashboard</span>
+              <span class="tag">UX</span>
+            </div>
+          </article>
+
+          <!-- يمكنك تكرار بطاقات المشاريع هنا -->
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <h3>تواصل معي</h3>
+        <div class="contact">
+          <form onsubmit="event.preventDefault();alert('تم إرسال الرسالة (محاكاة)');">
+            <div class="field">
+              <label for="name">الاسم</label>
+              <input id="name" placeholder="اسمك" required />
+            </div>
+            <div class="field">
+              <label for="email">البريد الإلكتروني</label>
+              <input id="email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="field">
+              <label for="msg">الرسالة</label>
+              <textarea id="msg" placeholder="اكتب طلبك أو وصف المشروع"></textarea>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end">
+              <button type="submit">أرسل</button>
+            </div>
+          </form>
+
+          <div style="min-width:260px;background:var(--card);padding:14px;border-radius:12px">
+            <h4 style="margin:0 0 8px 0">معلومات التواصل</h4>
+            <p style="margin:0;color:var(--muted)">الجوال: 966530905311</p>
+            <p style="margin:6px 0 0 0;color:var(--muted)">البريد: hsnalfaifi@outlook.sa</p>
+            <div style="margin-top:12px;display:flex;gap:8px">
+              <a href="#" style="text-decoration:none;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04)">LinkedIn</a>
+              <a href="#" style="text-decoration:none;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04)">GitHub</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <small>© 2025 عبدالله — جميع الحقوق محفوظة.</small>
+    </footer>
+  </div>
+</body>
 </html>
+
