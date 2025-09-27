@@ -1,103 +1,10 @@
-```html
 <!DOCTYPE html>
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مشاريعي</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f9;
-      color: #333;
-    }
-    header {
-      background: #222;
-      color: #fff;
-      padding: 15px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 22px;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 15px;
-      font-size: 16px;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: #00bcd4;
-    }
-    main {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 28px;
-    }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .project-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-      transition: transform 0.3s;
-    }
-    .project-card:hover {
-      transform: translateY(-5px);
-    }
-    .project-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-    .project-card .content {
-      padding: 15px;
-    }
-    .project-card h3 {
-      margin: 0 0 10px;
-      font-size: 20px;
-      color: #222;
-    }
-    .project-card p {
-      margin: 0 0 10px;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-    .tag {
-      background: #00bcd4;
-      color: #fff;
-      font-size: 12px;
-      padding: 3px 8px;
-      border-radius: 5px;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      background: #222;
-      color: #fff;
-      margin-top: 40px;
-    }
-  </style>
+  <title>المشاريع</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
@@ -106,50 +13,30 @@
       <a href="index.html">الرئيسية</a>
       <a href="about.html">عنّي</a>
       <a href="projects.html">المشاريع</a>
-      <a href="index.html#contact">تواصل</a>
+      <a href="certificates.html">الشهادات</a>
+      <a href="contact.html">تواصل</a>
     </nav>
   </header>
 
   <main>
     <h2>مشاريعي</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <img src="project1.jpg" alt="مشروع 1">
-        <div class="content">
-          <h3>مشروع إدارة الشبكات</h3>
-          <p>نظام يساعد على مراقبة الشبكات وإدارة البنية التحتية التقنية بكفاءة عالية.</p>
-          <div class="tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">JavaScript</span>
-          </div>
-        </div>
+    <div class="grid">
+      <div class="card">
+        <img src="images/project1.jpg" alt="مشروع 1">
+        <h3>مشروع إدارة الشبكات</h3>
+        <p>نظام يساعد على مراقبة الشبكات وإدارة البنية التحتية بكفاءة.</p>
       </div>
 
-      <div class="project-card">
-        <img src="project2.jpg" alt="مشروع 2">
-        <div class="content">
-          <h3>منصة تدريب تفاعلية</h3>
-          <p>منصة لتدريب الطلاب على مفاهيم الشبكات والحاسب عبر تمارين عملية.</p>
-          <div class="tags">
-            <span class="tag">Python</span>
-            <span class="tag">Django</span>
-            <span class="tag">SQL</span>
-          </div>
-        </div>
+      <div class="card">
+        <img src="images/project2.jpg" alt="مشروع 2">
+        <h3>منصة تدريب تفاعلية</h3>
+        <p>منصة لتدريب الطلاب على الشبكات والحاسب بطرق عملية.</p>
       </div>
 
-      <div class="project-card">
-        <img src="project3.jpg" alt="مشروع 3">
-        <div class="content">
-          <h3>موقع شخصي تفاعلي</h3>
-          <p>بناء موقع شخصي متكامل لعرض المشاريع والمهارات بشكل عصري وسريع.</p>
-          <div class="tags">
-            <span class="tag">HTML</span>
-            <span class="tag">CSS</span>
-            <span class="tag">Responsive</span>
-          </div>
-        </div>
+      <div class="card">
+        <img src="images/project3.jpg" alt="مشروع 3">
+        <h3>موقع شخصي تفاعلي</h3>
+        <p>موقع لعرض المشاريع والمهارات بشكل عصري وسريع.</p>
       </div>
     </div>
   </main>
@@ -159,4 +46,4 @@
   </footer>
 </body>
 </html>
-```
+
