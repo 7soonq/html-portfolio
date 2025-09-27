@@ -1,110 +1,35 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
+<!DOCTYPE html>
+<html lang="ar">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>عنّي - حسن الفيفي</title>
-  <link rel="icon" type="image/png" href="assets/images/your-photo-modified.png">
-  <meta name="description" content="صفحة تعرّف عن المهندس حسن الفيفي." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0f1724;
-      --card:#0b1220;
-      --accent:#06b6d4;
-      --muted:#94a3b8;
-      --glass: rgba(255,255,255,0.03);
-      --radius:14px;
-      --max-width:1100px;
-      font-family: 'Cairo', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-      color-scheme: dark;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,var(--bg), #071023 140%);
-      color:#e6eef6;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.5;
-      padding:32px 20px;
-      display:flex;justify-content:center;
-    }
-    .container{width:100%;max-width:var(--max-width)}
-
-    header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:700;color:#071023}
-    .brand h1{font-size:20px;margin:0}
-    nav{display:flex;gap:12px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
-    nav a:hover{color:#fff;background:var(--glass)}
-    nav a.active{color:#fff;text-decoration:underline}
-    .cta{background:linear-gradient(90deg,var(--accent),#7c3aed);padding:8px 14px;border-radius:10px;color:#021024;text-decoration:none;font-weight:600}
-
-    .about-section{
-      background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);
-      border-radius:var(--radius);
-      box-shadow:0 6px 20px rgba(2,6,23,0.6);
-      padding:24px;
-      margin-bottom:28px;
-    }
-    .about-section h2{margin-top:0;color:var(--accent)}
-    .about-section p{color:var(--muted);margin-bottom:16px}
-    .about-section ul{padding:0;margin:0;list-style:disc inside;color:var(--muted)}
-    .about-section li{margin-bottom:8px}
-
-    footer{margin-top:24px;color:var(--muted);text-align:center;padding:18px}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عنّي</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="brand">
-        <img src="assets/images/your-photo-modified.png" alt="صورة حسن الفيفي" class="logo">
-        <div>
-          <h1>حسن — مهندس حاسب آلي وشبكات</h1>
-        </div>
-      </div>
-      <nav aria-label="قائمة التنقل">
-        <a href="index.html">الرئيسية</a>
-        <a href="about.html" class="active">عنّي</a>
-        <a href="index.html#projects">المشاريع</a>
-        <a href="index.html#contact">تواصل</a>
-      </nav>
-    </header>
+  <header>
+    <h1>موقعي الشخصي</h1>
+    <nav>
+      <a href="index.html">الرئيسية</a>
+      <a href="about.html">عنّي</a>
+      <a href="projects.html">المشاريع</a>
+      <a href="certificates.html">الشهادات</a>
+      <a href="contact.html">تواصل</a>
+    </nav>
+  </header>
 
-    <main>
-      <section class="about-section">
-        <h2>من أنا</h2>
-        <p>
-          أنا المهندس حسن الفيفي، متخصص في هندسة الحاسب والشبكات. خبرتي تمتد لسنوات في تصميم وإدارة البنية التحتية التقنية،
-          وتأمين الشبكات، وحل المشكلات التقنية المعقدة. أركز على إيجاد حلول عملية وآمنة تدعم الاستدامة وتواكب التطور.
-        </p>
+  <main>
+    <h2>عنّي</h2>
+    <div class="card">
+      <p>أنا مهندس حاسب آلي وشبكات بخبرة في تصميم وإدارة الشبكات، وتأمين البنية التحتية وتحسين الأداء. أعمل على بناء حلول تقنية عملية تُسهم في تسهيل العمل وضمان استمرارية الخدمات.</p>
+    </div>
+  </main>
 
-        <h2>مهاراتي</h2>
-        <ul>
-          <li>إدارة الشبكات وأنظمة الحاسب</li>
-          <li>تصميم وتأمين البنية التحتية</li>
-          <li>برمجة وتطوير برمجيات بسيطة</li>
-          <li>حل المشكلات التقنية وتحسين الأداء</li>
-        </ul>
-
-        <h2>اهتماماتي</h2>
-        <p>
-          أطمح دائماً للتعلم المستمر ومواكبة أحدث التقنيات في مجال الشبكات والحوسبة، وأسعى للمشاركة في مشاريع
-          تُضيف قيمة حقيقية للمجتمع والمؤسسات.
-        </p>
-      </section>
-    </main>
-
-    <footer>
-      <small>© جميع الحقوق محفوظة - حسن الفيفي 2025</small>
-    </footer>
-  </div>
+  <footer>
+    <p>© 2025 جميع الحقوق محفوظة - اسمك</p>
+  </footer>
 </body>
 </html>
+
+
 
