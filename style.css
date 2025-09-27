@@ -1,4 +1,4 @@
-/* Reset بسيط */
+/* reset بسيط */
 * {
   margin: 0;
   padding: 0;
@@ -6,13 +6,12 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
+  font-family: "Arial", sans-serif;
   background: #f4f4f9;
   color: #333;
+  line-height: 1.6;
 }
 
-/* الهيدر */
 header {
   background: #222;
   color: #fff;
@@ -34,11 +33,11 @@ nav a {
   transition: color 0.3s;
 }
 
-nav a:hover {
+nav a:hover,
+nav a.active {
   color: #00bcd4;
 }
 
-/* المحتوى */
 main {
   padding: 40px 20px;
   max-width: 1000px;
@@ -49,76 +48,91 @@ h2 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
+  color: #222;
 }
 
-/* كروت */
+/* grid عامة للمشاريع والشهادات */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* الكروت */
 .card {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  padding: 20px;
-  margin-bottom: 20px;
+  overflow: hidden;
   transition: transform 0.3s;
+  text-align: center;
 }
+
 .card:hover {
   transform: translateY(-5px);
 }
 
-/* الشبكة للمشاريع والشهادات */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.grid img {
+.card img {
   width: 100%;
-  border-radius: 10px;
-}
-
-/* الصور الدائرية */
-.avatar {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
+  height: 180px;
   object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  display: block;
-  margin: auto;
 }
 
-/* الفورم */
+.card h3 {
+  margin: 15px 0 10px;
+  font-size: 20px;
+  color: #222;
+}
+
+.card p {
+  padding: 0 15px 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* نموذج التواصل */
 form {
+  max-width: 500px;
+  margin: auto;
   background: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  max-width: 600px;
-  margin: auto;
 }
 
-form input, form textarea {
+form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input,
+form textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 15px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
 form button {
+  display: block;
+  width: 100%;
+  padding: 10px;
   background: #00bcd4;
   color: #fff;
   border: none;
-  padding: 10px 20px;
+  border-radius: 6px;
   font-size: 16px;
-  border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s;
 }
+
 form button:hover {
   background: #0097a7;
 }
 
-/* الفوتر */
 footer {
   text-align: center;
   padding: 15px;
@@ -126,4 +140,3 @@ footer {
   color: #fff;
   margin-top: 40px;
 }
-
