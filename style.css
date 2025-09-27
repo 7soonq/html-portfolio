@@ -7,7 +7,7 @@
 
 body {
   font-family: "Arial", sans-serif;
-  background: #000;
+  background: #0f1724;
   color: #fff;
   line-height: 1.6;
 }
@@ -41,16 +41,23 @@ nav a.active {
 main {
   padding: 40px 20px;
   max-width: 1000px;
-  margin: auto;
+  margin:auto;
+  
 }
 
 h2 {
   text-align: center;
   margin-bottom: 30px;
   font-size: 28px;
-  color: #222;
+  color: #ffffff;
 }
-
+.avatar {
+  width: 300px;
+  height: 300px;
+  display: block;
+  margin: 20px auto;
+  
+}
 /* grid عامة للمشاريع والشهادات */
 .grid {
   display: grid;
@@ -60,7 +67,7 @@ h2 {
 
 /* الكروت */
 .card {
-  background: #fff;
+  background: #0b1220;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -81,20 +88,20 @@ h2 {
 .card h3 {
   margin: 15px 0 10px;
   font-size: 20px;
-  color: #222;
+  color: #ffffff;
 }
 
 .card p {
   padding: 0 15px 20px;
   font-size: 14px;
-  color: #555;
+  color: #c5c5c5;
 }
 
 /* نموذج التواصل */
 form {
   max-width: 500px;
   margin: auto;
-  background: #fff;
+  background: #0b1220;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -114,6 +121,7 @@ form textarea {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
+  
 }
 
 form button {
@@ -140,3 +148,4 @@ footer {
   color: #fff;
   margin-top: 40px;
 }
+
