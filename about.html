@@ -1,35 +1,275 @@
-<!DOCTYPE html>
+<!--
+  استبانة تسجيل مستفيد - صفحة واحدة (HTML + CSS + JavaScript)
+  المميزات:
+  - حقل إدخال العنوان مع Google Maps Autocomplete
+  - خريطة تفاعلية: اضغط لتحديد الموقع (يحفظ lat/lng)
+  - حقول أساسية (الاسم، رقم الهوية، جوال أساسي/إضافي)
+  - رفع ملفات (عرض اسم الملف فقط، لا رفع للسيرفر)
+  - تفرعات بسيطة (إذا كان المستفيد "مستأجر" يظهر أسئلة الإيجار)
+  - طريقة سهلة لإضافة Google Maps API Key (انظر المتغير GOOGLE_MAPS_API_KEY أدناه)
+
+  التعليمات السريعة:
+  1) افتح هذا الملف محليًا أو ارفعه إلى سيرفر.
+  2) ضع مفتاح Google Maps API داخل المتغير GOOGLE_MAPS_API_KEY في السطر 35
+     أو استخدم خاصية data-attribute في العنصر <script> لتضمين المفتاح.
+  3) الصفحة تقوم بتحميل مكتبة Google Maps بشكل ديناميكي عند توفر المفتاح.
+  4) هذا مثال جهة بداية. ربط البيانات مع Excel أو قاعدة بيانات يتطلب
+     إضافة endpoint خادم (server-side) أو استخدام Google Sheets API / Microsoft Graph.
+
+  ملاحظة أمنية: لا تضع مفاتيح API الحساسة في صور عامة إن أمكن؛ استخدم قيود على المفتاح
+  من لوحة Google Cloud (قصره على نطاقات الموقع أو عناوين IP).
+-->
+
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>عنّي</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استبانة تسجيل مستفيد - جمعية مسكن</title>
+  <style>
+    :root{--bg:#f7f9fc;--card:#ffffff;--accent:#0b74de;--muted:#6b7280}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, Arial, "Segoe UI", Roboto}
+    body{background:var(--bg);color:#111;padding:24px}
+    .container{max-width:980px;margin:0 auto}
+    .card{background:var(--card);border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(15,23,42,0.06)}
+    h1{margin:0 0 8px;font-size:20px}
+    p.lead{color:var(--muted);margin:0 0 18px}
+    label{display:block;margin-bottom:6px;font-weight:600}
+    input[type=text], input[type=tel], input[type=file], select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;background:#fbfdff}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .small{font-size:13px;color:var(--muted)}
+    .actions{display:flex;gap:8px;justify-content:flex-start;margin-top:12px}
+    button{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;border:0;cursor:pointer}
+    button.secondary{background:#e6edf9;color:#0b4f8a}
+    .map-wrap{height:320px;border-radius:8px;overflow:hidden;border:1px solid #e6eef8}
+    .inline{display:inline-block}
+    .hidden{display:none}
+    .file-list{margin-top:8px;font-size:14px}
+    .result{white-space:pre-wrap;background:#0b1220;color:#e6f3ff;padding:12px;border-radius:8px;margin-top:14px}
+    .section{margin-top:18px}
+    /* RTL tweaks */
+    label, .small { text-align: right }
+    .row{flex-direction:row-reverse}
+    @media (max-width:700px){ .row{flex-direction:column-reverse} }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>موقعي الشخصي</h1>
-    <nav>
-      <a href="index.html">الرئيسية</a>
-      <a href="about.html">عنّي</a>
-      <a href="projects.html">المشاريع</a>
-      <a href="certificates.html">الشهادات</a>
-      <a href="contact.html">تواصل</a>
-    </nav>
-  </header>
-
-  <main>
-    <h2>عنّي</h2>
+  <div class="container">
     <div class="card">
-      <p>أنا مهندس حاسب آلي وشبكات بخبرة في تصميم وإدارة الشبكات، وتأمين البنية التحتية وتحسين الأداء. أعمل على بناء حلول تقنية عملية تُسهم في تسهيل العمل وضمان استمرارية الخدمات.</p>
-    </div>
-  </main>
+      <h1>استبانة تسجيل مستفيد</h1>
+      <p class="lead">املأ البيانات التالية بدقة. يمكنك وضع العلامة على الخريطة لتحديد موقع السكن.</p>
 
-  <footer>
-    <p>© 2025 جميع الحقوق محفوظة - اسمك</p>
-  </footer>
+      <form id="beneficiaryForm">
+        <div class="section">
+          <label for="fullName">الاسم الكامل</label>
+          <input id="fullName" name="fullName" type="text" placeholder="أدخل اسم المستفيد" required />
+        </div>
+
+        <div class="section row">
+          <div class="col">
+            <label for="nid">رقم الهوية</label>
+            <input id="nid" name="nid" type="text" inputmode="numeric" placeholder="مثال: 1012345678" required />
+            <div class="small">بدون فراغات أو شرطات</div>
+          </div>
+          <div class="col">
+            <label for="phone">رقم الجوال الأساسي</label>
+            <input id="phone" name="phone" type="tel" placeholder="05xxxxxxxx" required />
+          </div>
+        </div>
+
+        <div class="section">
+          <label for="altPhone">رقم الجوال الإضافي (اختياري)</label>
+          <input id="altPhone" name="altPhone" type="tel" placeholder="05xxxxxxxx" />
+        </div>
+
+        <div class="section">
+          <label for="housingType">نوع السكن</label>
+          <select id="housingType" name="housingType" onchange="onHousingChange(event)">
+            <option value="">اختر نوع السكن</option>
+            <option value="owned">ملك</option>
+            <option value="rented">مستأجر</option>
+            <option value="relative">يسكن مع الأقارب</option>
+            <option value="none">بدون سكن</option>
+          </select>
+        </div>
+
+        <!-- تبويب خاص بالمستأجر يظهر حسب الاختيار -->
+        <div id="renterSection" class="section hidden">
+          <label for="rentAmount">قيمة الإيجار الشهري (ريال)</label>
+          <input id="rentAmount" name="rentAmount" type="text" inputmode="numeric" placeholder="مثال: 1500" />
+
+          <label for="rentalContract">رفع عقد الإيجار (اختياري)</label>
+          <input id="rentalContract" name="rentalContract" type="file" accept="application/pdf,image/*" />
+        </div>
+
+        <div class="section">
+          <label for="addressInput">عنوان السكن (ابحث أو اختر على الخريطة)</label>
+          <input id="addressInput" name="addressInput" type="text" placeholder="اكتب العنوان أو استخدم الاقتراحات" autocomplete="off" />
+          <div class="small">يمكن استخدام الاقتراح لتعبئة العنوان تلقائيا أو وضع علامة على الخريطة.</div>
+        </div>
+
+        <div class="section">
+          <div class="map-wrap" id="map"></div>
+          <div class="small">انقر على الخريطة لتثبيت الموقع. ستظهر الاحداثيات أدناه.</div>
+          <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-start;flex-direction:row-reverse">
+            <div class="col"><label for="lat">خط العرض (Latitude)</label><input id="lat" name="lat" type="text" readonly placeholder="سيتم تعبئته تلقائياً" /></div>
+            <div class="col"><label for="lng">خط الطول (Longitude)</label><input id="lng" name="lng" type="text" readonly placeholder="سيتم تعبئته تلقائياً" /></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <label for="attachments">المرفقات (هوية، كرت عائلة، صور المنزل...)</label>
+          <input id="attachments" name="attachments" type="file" multiple accept="application/pdf,image/*" />
+          <div id="fileList" class="file-list small"></div>
+        </div>
+
+        <div class="section actions">
+          <button type="submit">إرسال</button>
+          <button type="button" class="secondary" onclick="resetForm()">إعادة تعيين</button>
+          <button type="button" class="secondary" onclick="downloadJSON()">تحميل JSON</button>
+        </div>
+
+      </form>
+
+      <div id="output" class="result hidden"></div>
+
+      <p class="small" style="margin-top:14px">ملاحظة: هذا النموذج مثال يعمل محليًا. للربط المباشر مع Excel/قاعدة بيانات تحتاج إنشاء endpoint على الخادم أو استخدام Microsoft Graph / Google Sheets API.</p>
+
+    </div>
+  </div>
+
+  <script>
+    // ====== ضع مفتاح Google Maps API هنا ======
+    // بدلاً من وضع المفتاح مباشرة في الملف يمكنك استخدام آلية server-side لإدراجه أثناء النشر
+    const GOOGLE_MAPS_API_KEY = ""; // <-- ضع مفتاحك هنا، مثال: "AIzaSyA..."
+
+    // ====== تحميل سكربت Google Maps ديناميكياً إذا وُجد المفتاح ======
+    function loadGoogleMapsIfNeeded(callback) {
+      if (!GOOGLE_MAPS_API_KEY) { console.warn('No Google Maps API key provided. Map features will be disabled.'); callback(null); return; }
+      const existing = document.querySelector('script[data-maps-api]');
+      if (existing) { existing.onload = () => callback(window.google); return; }
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places&language=ar`;
+      script.defer = true;
+      script.async = true;
+      script.setAttribute('data-maps-api', '1');
+      script.onload = () => callback(window.google);
+      script.onerror = () => { console.error('Failed to load Google Maps script'); callback(null); };
+      document.head.appendChild(script);
+    }
+
+    // ====== عناصر DOM ======
+    const mapEl = document.getElementById('map');
+    const addressInput = document.getElementById('addressInput');
+    const latInput = document.getElementById('lat');
+    const lngInput = document.getElementById('lng');
+    const attachments = document.getElementById('attachments');
+    const fileList = document.getElementById('fileList');
+    const renterSection = document.getElementById('renterSection');
+
+    let map, marker, autocomplete;
+
+    function initMap(google) {
+      try {
+        const center = { lat: 24.7136, lng: 46.6753 }; // Riyadh center as default
+        map = new google.maps.Map(mapEl, { center, zoom: 11 });
+        marker = new google.maps.Marker({ map: map, draggable: true });
+
+        // انقر على الخريطة لتعيين الإحداثيات
+        map.addListener('click', (e) => {
+          setMarker(e.latLng.lat(), e.latLng.lng());
+        });
+
+        // سحب الماركر يحدث الاحداثيات
+        marker.addListener('dragend', () => {
+          const pos = marker.getPosition(); setMarker(pos.lat(), pos.lng());
+        });
+
+        // Autocomplete للعناوين
+        const input = addressInput;
+        autocomplete = new google.maps.places.Autocomplete(input, { componentRestrictions: { country: 'sa' } });
+        autocomplete.addListener('place_changed', () => {
+          const place = autocomplete.getPlace();
+          if (!place.geometry) return;
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          map.panTo({ lat, lng });
+          map.setZoom(15);
+          setMarker(lat, lng);
+        });
+
+      } catch (err) {
+        console.error('initMap error', err);
+      }
+    }
+
+    function setMarker(lat, lng) {
+      if (!marker) return;
+      const position = { lat: parseFloat(lat), lng: parseFloat(lng) };
+      marker.setPosition(position);
+      latInput.value = position.lat.toFixed(6);
+      lngInput.value = position.lng.toFixed(6);
+    }
+
+    // تحميل الماب
+    loadGoogleMapsIfNeeded((google) => { if (google) initMap(google); else { mapEl.innerHTML = '<div style="padding:18px;color:#555">الخريطة غير متاحة لأن مفتاح Google Maps غير مضاف.</div>'; } });
+
+    // ====== تفرعات بسيطة ======
+    function onHousingChange(e){
+      const v = e.target.value;
+      if (v === 'rented') renterSection.classList.remove('hidden'); else renterSection.classList.add('hidden');
+    }
+
+    // ====== عرض أسماء الملفات المحددة ======
+    attachments.addEventListener('change', () => {
+      const files = Array.from(attachments.files);
+      if (files.length === 0) { fileList.textContent = '' ; return; }
+      fileList.innerHTML = files.map(f => `${f.name} (${Math.round(f.size/1024)} KB)`).join('<br>');
+    });
+
+    // ====== التعامل مع إرسال النموذج ======
+    const form = document.getElementById('beneficiaryForm');
+    const output = document.getElementById('output');
+
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const formData = new FormData(form);
+      // إضافة إحداثيات
+      formData.set('lat', latInput.value || '');
+      formData.set('lng', lngInput.value || '');
+
+      // تجميع البيانات في كائن JSON للعرض أو الإرسال للخادم
+      const obj = {};
+      formData.forEach((v,k) => {
+        // ملفات -> تحويل إلى أسماء فقط (لأن الرفع للخادم غير مفعّل هنا)
+        if (v instanceof File) {
+          // لو ملف واحد
+          obj[k] = v.name || '';
+        } else {
+          obj[k] = v;
+        }
+      });
+
+      // إظهار النتيجة
+      output.classList.remove('hidden');
+      output.textContent = JSON.stringify(obj, null, 2);
+
+      // هنا يمكنك إضافة طلب fetch لإرسال formData إلى endpoint على السيرفر
+      // fetch('/api/submit', { method:'POST', body: formData })
+    });
+
+    function resetForm(){ form.reset(); fileList.textContent = ''; output.classList.add('hidden'); latInput.value=''; lngInput.value=''; if (marker) marker.setMap(null); }
+
+    // تحميل JSON الموجود في الحقل للمستخدم
+    function downloadJSON(){
+      const text = output.textContent || '';
+      if (!text) { alert('لا توجد بيانات للتحميل. أرسل النموذج أولاً.'); return; }
+      const blob = new Blob([text], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'beneficiary.json'; a.click(); URL.revokeObjectURL(url);
+    }
+
+  </script>
 </body>
 </html>
-
-
-
