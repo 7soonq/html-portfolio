@@ -1,268 +1,206 @@
-import React, { useState } from "react";
+<!-- Multi-Step Registration Form (Pure HTML + CSS + JS) -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>استمارة تسجيل المستفيد</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
 
-export default function ApplicationForm() {
-  const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({});
+    .container {
+      width: 90%;
+      max-width: 700px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
 
-  const next = () => setStep((s) => s + 1);
-  const back = () => setStep((s) => s - 1);
+    .progress {
+      width: 100%;
+      height: 8px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
 
-  const update = (field, value) => {
-    setFormData({ ...formData, [field]: value });
-  };
+    .progress-bar {
+      height: 8px;
+      width: 0%;
+      background: #007bff;
+      transition: 0.4s;
+    }
 
-  const progress = (step / 5) * 100;
+    h2 { margin-top: 0; }
 
-  return (
-    <div className="max-w-3xl mx-auto p-6 space-y-6">
-      {/* Progress Bar */}
-      <div className="w-full bg-gray-200 rounded-full h-3">
-        <div
-          className="bg-blue-500 h-3 rounded-full transition-all"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
+    .step { display: none; }
+    .step.active { display: block; }
 
-      {/* Steps */}
-      {step === 1 && (
-        <BasicDataStep update={update} data={formData} />
-      )}
-      {step === 2 && <IncomeStep update={update} data={formData} />}
-      {step === 3 && <AssetsStep update={update} data={formData} />}
-      {step === 4 && <FamilyStep update={update} data={formData} />}
-      {step === 5 && <HousingStep update={update} data={formData} />}
+    .btns { margin-top: 20px; display: flex; justify-content: space-between; }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .next { background: #007bff; color: white; }
+    .back { background: #aaa; color: white; }
+  </style>
+</head>
+<body>
 
-      {/* Navigation */}
-      <div className="flex justify-between pt-4">
-        {step > 1 ? (
-          <button
-            onClick={back}
-            className="px-4 py-2 bg-gray-300 rounded-xl"
-          >
-            رجوع
-          </button>
-        ) : (
-          <div></div>
-        )}
+<div class="container">
+  <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
 
-        {step < 5 ? (
-          <button
-            onClick={next}
-            className="px-4 py-2 bg-blue-600 text-white rounded-xl"
-          >
-            التالي
-          </button>
-        ) : (
-          <button
-            onClick={() => console.log(formData)}
-            className="px-4 py-2 bg-green-600 text-white rounded-xl"
-          >
-            إرسال
-          </button>
-        )}
-      </div>
+  <!-- STEP 1: البيانات الأساسية -->
+  <div class="step active" id="step1">
+    <h2>البيانات الأساسية</h2>
+    <label>الاسم:</label>
+    <input type="text" id="name" class="input" />
+
+    <label>نوع الجنس:</label>
+    <select id="gender">
+      <option>ذكر</option>
+      <option>أنثى</option>
+    </select>
+
+    <label>تاريخ الميلاد:</label>
+    <input type="date" id="birthdate" />
+
+    <label>الحالة الاجتماعية:</label>
+    <select id="marital">
+      <option>أعزب</option>
+      <option>متزوج</option>
+      <option>مطلق</option>
+      <option>أرمل</option>
+    </select>
+
+    <label>المستوى التعليمي:</label>
+    <input type="text" id="education" />
+
+    <label>رقم الجوال:</label>
+    <input type="text" id="phone" />
+
+    <label>رقم احتياطي:</label>
+    <input type="text" id="altphone" />
+
+    <label>المنطقة:</label>
+    <input type="text" id="region" />
+
+    <label>المدينة:</label>
+    <input type="text" id="city" />
+
+    <label>الحي:</label>
+    <input type="text" id="district" />
+
+    <label>إحداثيات الموقع:</label>
+    <input type="text" id="coords" placeholder="مثال: 24.4543, 39.6501" />
+
+    <label>صورة الهوية:</label>
+    <input type="file" id="idcard" />
+
+    <div class="btns"><button class="next" onclick="nextStep()">التالي</button></div>
+  </div>
+
+  <!-- STEP 2: الدخل -->
+  <div class="step" id="step2">
+    <h2>الدخل</h2>
+    <label>التقاعد:</label><input type="number" id="retirement" />
+    <label>الضمان الاجتماعي:</label><input type="number" id="social" />
+    <label>حساب المواطن:</label><input type="number" id="citizen" />
+    <label>التأهيل الشامل:</label><input type="number" id="rehab" />
+    <label>الراتب:</label><input type="number" id="salary" />
+    <label>أخرى:</label><input type="number" id="otherIncome" />
+
+    <div class="btns">
+      <button class="back" onclick="prevStep()">رجوع</button>
+      <button class="next" onclick="nextStep()">التالي</button>
     </div>
-  );
-}
+  </div>
 
-// ====== Step 1: Basic Data ======
-function BasicDataStep({ update, data }) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">البيانات الأساسية</h2>
+  <!-- STEP 3: الأقساط والممتلكات -->
+  <div class="step" id="step3">
+    <h2>الأقساط والممتلكات</h2>
+    <label>عدد السيارات:</label><input id="cars" type="number" />
+    <label>عدد الأراضي:</label><input id="lands" type="number" />
+    <label>عدد المواشي:</label><input id="animals" type="number" />
 
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="الاسم"
-        value={data.name || ""}
-        onChange={(e) => update("name", e.target.value)}
-      />
+    <label>مرفق إثبات الملكيات:</label><input type="file" id="assetsFile" />
 
-      <select
-        className="w-full p-2 rounded-xl border"
-        value={data.gender || ""}
-        onChange={(e) => update("gender", e.target.value)}
-      >
-        <option value="">اختر الجنس</option>
-        <option value="ذكر">ذكر</option>
-        <option value="أنثى">أنثى</option>
-      </select>
+    <label>الأقساط الشهرية:</label><input id="loans" type="number" />
 
-      <input
-        type="date"
-        className="w-full p-2 rounded-xl border"
-        value={data.birthdate || ""}
-        onChange={(e) => update("birthdate", e.target.value)}
-      />
+    <label>مرفق إثبات الأقساط:</label><input type="file" id="loanFile" />
 
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="الحالة الاجتماعية"
-        value={data.status || ""}
-        onChange={(e) => update("status", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="المستوى التعليمي"
-        value={data.education || ""}
-        onChange={(e) => update("education", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="رقم الجوال"
-        value={data.phone || ""}
-        onChange={(e) => update("phone", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="رقم احتياطي"
-        value={data.altPhone || ""}
-        onChange={(e) => update("altPhone", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="المنطقة"
-        value={data.region || ""}
-        onChange={(e) => update("region", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="المدينة"
-        value={data.city || ""}
-        onChange={(e) => update("city", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="الحي"
-        value={data.district || ""}
-        onChange={(e) => update("district", e.target.value)}
-      />
-
-      <input
-        type="file"
-        className="w-full p-2 rounded-xl border"
-        onChange={(e) => update("idImage", e.target.files[0])}
-      />
+    <div class="btns">
+      <button class="back" onclick="prevStep()">رجوع</button>
+      <button class="next" onclick="nextStep()">التالي</button>
     </div>
-  );
-}
+  </div>
 
-// ====== Step 2: Income ======
-function IncomeStep({ update, data }) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">الدخل</h2>
+  <!-- STEP 4: أفراد الأسرة -->
+  <div class="step" id="step4">
+    <h2>أفراد الأسرة</h2>
+    <label>عدد أفراد الأسرة:</label>
+    <input id="familyCount" type="number" />
 
-      {[
-        "التقاعد",
-        "الضمان الاجتماعي",
-        "حساب المواطن",
-        "التأهيل الشامل",
-        "الراتب",
-        "أخرى",
-      ].map((key) => (
-        <input
-          key={key}
-          className="w-full p-2 rounded-xl border"
-          placeholder={`${key}`}
-          value={data[key] || ""}
-          onChange={(e) => update(key, e.target.value)}
-        />
-      ))}
+    <textarea id="familyDetails" rows="5" placeholder="أدخل: الاسم – الهوية – الميلاد – الحالة – المرحلة الدراسية"></textarea>
+
+    <div class="btns">
+      <button class="back" onclick="prevStep()">رجوع</button>
+      <button class="next" onclick="nextStep()">التالي</button>
     </div>
-  );
-}
+  </div>
 
-// ====== Step 3: Assets ======
-function AssetsStep({ update, data }) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">الأقساط والممتلكات</h2>
+  <!-- STEP 5: الحالة السكنية -->
+  <div class="step" id="step5">
+    <h2>الحالة السكنية</h2>
+    <textarea id="housingStatus" rows="6" placeholder="وصف حالة المنزل وانهيارات الجدران والتشققات..."></textarea>
 
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="عدد السيارات"
-        value={data.cars || ""}
-        onChange={(e) => update("cars", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="عدد الأراضي"
-        value={data.lands || ""}
-        onChange={(e) => update("lands", e.target.value)}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="عدد المواشي"
-        value={data.animals || ""}
-        onChange={(e) => update("animals", e.target.value)}
-      />
-
-      <input
-        type="file"
-        className="w-full p-2 rounded-xl border"
-        onChange={(e) => update("assetsProof", e.target.files[0])}
-      />
-
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="الأقساط"
-        value={data.installments || ""}
-        onChange={(e) => update("installments", e.target.value)}
-      />
-
-      <input
-        type="file"
-        className="w-full p-2 rounded-xl border"
-        onChange={(e) => update("installmentsProof", e.target.files[0])}
-      />
+    <div class="btns">
+      <button class="back" onclick="prevStep()">رجوع</button>
+      <button class="next" onclick="submitForm()">إرسال</button>
     </div>
-  );
-}
+  </div>
+</div>
 
-// ====== Step 4: Family Members ======
-function FamilyStep({ update, data }) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">أفراد الأسرة</h2>
+<script>
+  let current = 1;
 
-      <input
-        className="w-full p-2 rounded-xl border"
-        placeholder="عدد أفراد الأسرة"
-        value={data.familyCount || ""}
-        onChange={(e) => update("familyCount", e.target.value)}
-      />
+  function updateProgress() {
+    const bar = document.getElementById("progress-bar");
+    bar.style.width = (current / 5) * 100 + "%";
+  }
 
-      <textarea
-        className="w-full p-2 rounded-xl border"
-        placeholder="أدخل بيانات أفراد الأسرة (الاسم، رقم الهوية، الميلاد، الحالة الاجتماعية، المرحلة الدراسية)"
-        value={data.familyDetails || ""}
-        onChange={(e) => update("familyDetails", e.target.value)}
-      />
-    </div>
-  );
-}
+  function showStep() {
+    document.querySelectorAll(".step").forEach((s) => s.classList.remove("active"));
+    document.getElementById("step" + current).classList.add("active");
+    updateProgress();
+  }
 
-// ====== Step 5: Housing Evaluation ======
-function HousingStep({ update, data }) {
-  return (
-    <div className="space-y-4">
-      <h2 className="text-xl font-bold">الحالة السكنية</h2>
+  function nextStep() {
+    if (current < 5) current++;
+    showStep();
+  }
 
-      <textarea
-        className="w-full p-2 rounded-xl border"
-        placeholder="تقييم المهندس لوضع المنزل من جميع الجهات"
-        value={data.housing || ""}
-        onChange={(e) => update("housing", e.target.value)}
-      />
-    </div>
-  );
-}
+  function prevStep() {
+    if (current > 1) current--;
+    showStep();
+  }
+
+  function submitForm() {
+    alert("تم إرسال النموذج بنجاح (يمكن ربطه بـ Excel، Google Sheets أو API)");
+  }
+
+  showStep();
+</script>
+
+</body>
+</html>
