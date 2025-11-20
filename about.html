@@ -1,206 +1,270 @@
-<!-- Multi-Step Registration Form (Pure HTML + CSS + JS) -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>استمارة تسجيل المستفيد</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>استبانة تسجيل مستفيد</title>
   <style>
+    :root {
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --accent-light: #dbeafe;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --radius: 14px;
+      --shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+    }
+
     body {
-      font-family: sans-serif;
-      background: #f5f5f5;
       margin: 0;
-      padding: 0;
+      font-family: "Tajawal", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text-dark);
+      padding: 24px;
     }
 
     .container {
-      width: 90%;
-      max-width: 700px;
-      margin: 30px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    .progress {
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .lead {
+      margin-bottom: 25px;
+      color: var(--text-light);
+      font-size: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    input, select, textarea {
       width: 100%;
-      height: 8px;
-      background: #ddd;
-      border-radius: 10px;
+      padding: 12px;
+      border-radius: var(--radius);
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 15px;
+      transition: 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 0 3px var(--accent-light);
+    }
+
+    .row {
+      display: flex;
+      gap: 14px;
+      flex-direction: row-reverse;
+    }
+
+    .col { flex: 1; }
+
+    .section { margin-bottom: 25px; }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: var(--radius);
+      border: none;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    button.primary:hover { background: #1d4ed8; }
+
+    button.secondary {
+      background: #e2e8f0;
+      color: var(--text-dark);
+    }
+
+    button.secondary:hover { background: #cbd5e1; }
+
+    /* Progress Bar */
+    .progress {
+      height: 10px;
+      background: #e2e8f0;
+      border-radius: var(--radius);
+      margin-bottom: 25px;
       overflow: hidden;
-      margin-bottom: 20px;
     }
 
     .progress-bar {
-      height: 8px;
+      height: 100%;
       width: 0%;
-      background: #007bff;
-      transition: 0.4s;
+      background: var(--accent);
+      transition: width 0.4s ease;
     }
-
-    h2 { margin-top: 0; }
-
-    .step { display: none; }
-    .step.active { display: block; }
-
-    .btns { margin-top: 20px; display: flex; justify-content: space-between; }
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .next { background: #007bff; color: white; }
-    .back { background: #aaa; color: white; }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="card">
 
-<div class="container">
-  <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      <h1>استبانة تسجيل مستفيد</h1>
+      <p class="lead">املأ البيانات المطلوبة خطوة بخطوة.</p>
 
-  <!-- STEP 1: البيانات الأساسية -->
-  <div class="step active" id="step1">
-    <h2>البيانات الأساسية</h2>
-    <label>الاسم:</label>
-    <input type="text" id="name" class="input" />
+      <form id="multiForm">
+        <!-- STEP 1 -->
+        <div class="step" id="step1">
+          <h2>البيانات الأساسية</h2>
 
-    <label>نوع الجنس:</label>
-    <select id="gender">
-      <option>ذكر</option>
-      <option>أنثى</option>
-    </select>
+          <div class="section">
+            <label>الاسم الكامل</label>
+            <input type="text" placeholder="أدخل الاسم" />
+          </div>
 
-    <label>تاريخ الميلاد:</label>
-    <input type="date" id="birthdate" />
+          <div class="row section">
+            <div class="col">
+              <label>نوع الجنس</label>
+              <select>
+                <option value="">اختر</option>
+                <option value="male">ذكر</option>
+                <option value="female">أنثى</option>
+              </select>
+            </div>
+            <div class="col">
+              <label>تاريخ الميلاد</label>
+              <input type="date" />
+            </div>
+          </div>
 
-    <label>الحالة الاجتماعية:</label>
-    <select id="marital">
-      <option>أعزب</option>
-      <option>متزوج</option>
-      <option>مطلق</option>
-      <option>أرمل</option>
-    </select>
+          <div class="actions">
+            <button type="button" class="primary" onclick="nextStep()">التالي</button>
+          </div>
+        </div>
 
-    <label>المستوى التعليمي:</label>
-    <input type="text" id="education" />
+        <!-- STEP 2 -->
+        <div class="step hidden" id="step2">
+          <h2>الدخل</h2>
 
-    <label>رقم الجوال:</label>
-    <input type="text" id="phone" />
+          <div class="section">
+            <label>الدخل الشهري</label>
+            <input type="text" placeholder="مثال: 3000" />
+          </div>
 
-    <label>رقم احتياطي:</label>
-    <input type="text" id="altphone" />
+          <div class="actions">
+            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
+            <button type="button" class="primary" onclick="nextStep()">التالي</button>
+          </div>
+        </div>
 
-    <label>المنطقة:</label>
-    <input type="text" id="region" />
+        <!-- STEP 3 -->
+        <div class="step hidden" id="step3">
+          <h2>الممتلكات</h2>
 
-    <label>المدينة:</label>
-    <input type="text" id="city" />
+          <div class="section">
+            <label>عدد السيارات</label>
+            <input type="number" />
+          </div>
 
-    <label>الحي:</label>
-    <input type="text" id="district" />
+          <div class="actions">
+            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
+            <button type="button" class="primary" onclick="nextStep()">التالي</button>
+          </div>
+        </div>
 
-    <label>إحداثيات الموقع:</label>
-    <input type="text" id="coords" placeholder="مثال: 24.4543, 39.6501" />
+        <!-- STEP 4 -->
+        <div class="step hidden" id="step4">
+          <h2>بيانات أفراد الأسرة</h2>
 
-    <label>صورة الهوية:</label>
-    <input type="file" id="idcard" />
+          <div class="section">
+            <label>عدد أفراد الأسرة</label>
+            <input type="number" />
+          </div>
 
-    <div class="btns"><button class="next" onclick="nextStep()">التالي</button></div>
-  </div>
+          <div class="actions">
+            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
+            <button type="button" class="primary" onclick="nextStep()">التالي</button>
+          </div>
+        </div>
 
-  <!-- STEP 2: الدخل -->
-  <div class="step" id="step2">
-    <h2>الدخل</h2>
-    <label>التقاعد:</label><input type="number" id="retirement" />
-    <label>الضمان الاجتماعي:</label><input type="number" id="social" />
-    <label>حساب المواطن:</label><input type="number" id="citizen" />
-    <label>التأهيل الشامل:</label><input type="number" id="rehab" />
-    <label>الراتب:</label><input type="number" id="salary" />
-    <label>أخرى:</label><input type="number" id="otherIncome" />
+        <!-- STEP 5 -->
+        <div class="step hidden" id="step5">
+          <h2>الحالة السكنية</h2>
 
-    <div class="btns">
-      <button class="back" onclick="prevStep()">رجوع</button>
-      <button class="next" onclick="nextStep()">التالي</button>
+          <div class="section">
+            <label>وصف حالة المنزل</label>
+            <textarea rows="4" placeholder="اكتب وصف الحالة"></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
+            <button type="submit" class="primary">إرسال</button>
+          </div>
+        </div>
+      </form>
+
     </div>
   </div>
-
-  <!-- STEP 3: الأقساط والممتلكات -->
-  <div class="step" id="step3">
-    <h2>الأقساط والممتلكات</h2>
-    <label>عدد السيارات:</label><input id="cars" type="number" />
-    <label>عدد الأراضي:</label><input id="lands" type="number" />
-    <label>عدد المواشي:</label><input id="animals" type="number" />
-
-    <label>مرفق إثبات الملكيات:</label><input type="file" id="assetsFile" />
-
-    <label>الأقساط الشهرية:</label><input id="loans" type="number" />
-
-    <label>مرفق إثبات الأقساط:</label><input type="file" id="loanFile" />
-
-    <div class="btns">
-      <button class="back" onclick="prevStep()">رجوع</button>
-      <button class="next" onclick="nextStep()">التالي</button>
-    </div>
-  </div>
-
-  <!-- STEP 4: أفراد الأسرة -->
-  <div class="step" id="step4">
-    <h2>أفراد الأسرة</h2>
-    <label>عدد أفراد الأسرة:</label>
-    <input id="familyCount" type="number" />
-
-    <textarea id="familyDetails" rows="5" placeholder="أدخل: الاسم – الهوية – الميلاد – الحالة – المرحلة الدراسية"></textarea>
-
-    <div class="btns">
-      <button class="back" onclick="prevStep()">رجوع</button>
-      <button class="next" onclick="nextStep()">التالي</button>
-    </div>
-  </div>
-
-  <!-- STEP 5: الحالة السكنية -->
-  <div class="step" id="step5">
-    <h2>الحالة السكنية</h2>
-    <textarea id="housingStatus" rows="6" placeholder="وصف حالة المنزل وانهيارات الجدران والتشققات..."></textarea>
-
-    <div class="btns">
-      <button class="back" onclick="prevStep()">رجوع</button>
-      <button class="next" onclick="submitForm()">إرسال</button>
-    </div>
-  </div>
-</div>
 
 <script>
-  let current = 1;
+  let step = 1;
+  const totalSteps = 5;
 
-  function updateProgress() {
-    const bar = document.getElementById("progress-bar");
-    bar.style.width = (current / 5) * 100 + "%";
-  }
+  function showStep(n) {
+    document.querySelectorAll('.step').forEach((s) => s.classList.add('hidden'));
+    document.getElementById('step' + n).classList.remove('hidden');
 
-  function showStep() {
-    document.querySelectorAll(".step").forEach((s) => s.classList.remove("active"));
-    document.getElementById("step" + current).classList.add("active");
-    updateProgress();
+    const progress = (n / totalSteps) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
   }
 
   function nextStep() {
-    if (current < 5) current++;
-    showStep();
+    if (step < totalSteps) {
+      step++;
+      showStep(step);
+    }
   }
 
   function prevStep() {
-    if (current > 1) current--;
-    showStep();
+    if (step > 1) {
+      step--;
+      showStep(step);
+    }
   }
 
-  function submitForm() {
-    alert("تم إرسال النموذج بنجاح (يمكن ربطه بـ Excel، Google Sheets أو API)");
-  }
-
-  showStep();
+  showStep(step);
 </script>
-
 </body>
 </html>
