@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل دخول الموظفين | نظام مسكن ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #00675B;
+            --secondary-color: #8CC63F;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --bg-light: #F9FAFB;
+            --white: #FFFFFF;
+            --radius: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', sans-serif; height: 100vh; overflow: hidden; display: flex; }
+
+        /* --- الجانب الأيمن: الصورة والرسالة --- */
+        .login-banner {
+            flex: 1.2;
+            background: linear-gradient(rgba(0, 103, 91, 0.85), rgba(0, 77, 64, 0.9)), url('https://images.unsplash.com/photo-1593113598332-cd288d649433?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .banner-content { max-width: 500px; animation: fadeInUp 1s ease-out; }
+        .banner-content h2 { font-size: 2.5rem; margin-bottom: 20px; font-weight: 800; }
+        .banner-content p { font-size: 1.1rem; line-height: 1.6; opacity: 0.9; }
+        .quote-icon { font-size: 3rem; margin-bottom: 20px; opacity: 0.5; }
+
+        /* --- الجانب الأيسر: النموذج --- */
+        .login-form-container {
+            flex: 1;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .logo-area { text-align: center; margin-bottom: 40px; }
+        .logo-text { font-size: 2rem; font-weight: 800; color: var(--primary-color); }
+        .logo-sub { color: var(--secondary-color); font-size: 0.9rem; letter-spacing: 1px; }
+
+        .form-title { margin-bottom: 30px; text-align: center; }
+        .form-title h3 { font-size: 1.5rem; color: var(--text-dark); margin-bottom: 5px; }
+        .form-title p { color: var(--text-gray); font-size: 0.9rem; }
+
+        .input-group { margin-bottom: 20px; position: relative; }
+        .input-label { display: block; margin-bottom: 8px; color: var(--text-dark); font-weight: 500; font-size: 0.9rem; }
+        
+        .input-wrapper { position: relative; }
+        .input-field {
+            width: 100%;
+            padding: 12px 15px 12px 40px; /* مساحة للأيقونة */
+            border: 1px solid #D1D5DB;
+            border-radius: var(--radius);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 103, 91, 0.1);
+        }
+
+        .field-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+        }
+
+        .toggle-password {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #9CA3AF;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+        }
+
+        .checkbox-group { display: flex; align-items: center; gap: 8px; cursor: pointer; color: var(--text-gray); }
+        .forgot-link { color: var(--primary-color); text-decoration: none; font-weight: 600; }
+        .forgot-link:hover { text-decoration: underline; }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-login:hover { background-color: #004D40; transform: translateY(-1px); }
+        .btn-login:disabled { background-color: #ccc; cursor: not-allowed; transform: none; }
+
+        .footer-links {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+        .footer-links a { color: var(--text-dark); text-decoration: none; }
+
+        /* رسالة الخطأ */
+        .error-msg {
+            background-color: #FEF2F2;
+            color: #991B1B;
+            padding: 10px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+            border: 1px solid #FCA5A5;
+            text-align: center;
+        }
+
+        /* تحريكات */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* تجاوب للجوال */
+        @media (max-width: 900px) {
+            .login-banner { display: none; } /* إخفاء الصورة في الجوال */
+            .login-form-container { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الجزء الأيمن (صورة) -->
+    <div class="login-banner">
+        <div class="banner-content">
+            <i class="fas fa-quote-right quote-icon"></i>
+            <h2>بوابة الموظفين</h2>
+            <p>"العمل الذي نقوم به اليوم، يبني مستقبلاً آمناً لأسر كانت تنتظر الأمل. شكراً لجهودكم."</p>
+            <div style="margin-top: 30px; width: 100px; height: 4px; background: var(--secondary-color); border-radius: 2px;"></div>
+        </div>
+    </div>
+
+    <!-- الجزء الأيسر (النموذج) -->
+    <div class="login-form-container">
+        <div class="login-box">
+            <div class="logo-area">
+                <div class="logo-text">مسكن ERP</div>
+                <div class="logo-sub">نظام إدارة الموارد المؤسسية</div>
+            </div>
+
+            <div class="form-title">
+                <h3>مرحباً بعودتك 👋</h3>
+                <p>الرجاء إدخال بيانات الدخول للوصول للنظام</p>
+            </div>
+
+            <!-- رسالة خطأ (تظهر برمجياً) -->
+            <div class="error-msg" id="errorMsg">
+                <i class="fas fa-exclamation-circle"></i> اسم المستخدم أو كلمة المرور غير صحيحة
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="input-group">
+                    <label class="input-label">البريد الإلكتروني / اسم المستخدم</label>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" class="input-field" placeholder="name@maskan.org.sa" required>
+                        <i class="fas fa-envelope field-icon" style="left:auto; right:15px;"></i> <!-- أيقونة يمين للحقل -->
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">كلمة المرور</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+                        <i class="fas fa-eye toggle-password" id="togglePassword" style="left:15px;"></i>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-group">
+                        <input type="checkbox"> تذكرني على هذا الجهاز
+                    </label>
+                    <a href="#" class="forgot-link">نسيت كلمة المرور؟</a>
+                </div>
+
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span>تسجيل الدخول</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </form>
+
+            <div class="footer-links">
+                تواجه مشكلة؟ <a href="#">تواصل مع الدعم الفني</a>
+                <br><br>
+                <span style="opacity:0.5; font-size:0.75rem;">إصدار النظام v2.4.0</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إظهار وإخفاء كلمة المرور
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function (e) {
+            // تبديل النوع
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            // تبديل الأيقونة
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // محاكاة عملية تسجيل الدخول
+        function handleLogin(e) {
+            e.preventDefault(); // منع إعادة تحميل الصفحة
+            
+            const btn = document.getElementById('loginBtn');
+            const email = document.getElementById('email').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            // إخفاء رسالة الخطأ القديمة
+            errorMsg.style.display = 'none';
+
+            // تغيير حالة الزر إلى "جاري التحميل"
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
+            btn.disabled = true;
+
+            // محاكاة تأخير الشبكة (Server Delay)
+            setTimeout(() => {
+                // تحقق وهمي (لأغراض العرض فقط، نقبل أي إيميل صحيح)
+                if(email.includes('@')) {
+                    // نجاح -> توجيه إلى لوحة التحكم
+                    btn.style.backgroundColor = '#10B981'; // أخضر للنجاح
+                    btn.innerHTML = '<i class="fas fa-check"></i> تم الدخول بنجاح';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'admin.html'; // التوجيه للصفحة السابقة
+                    }, 800);
+                } else {
+                    // فشل
+                    btn.innerHTML = 'تسجيل الدخول';
+                    btn.disabled = false;
+                    btn.style.backgroundColor = '#00675B'; // عودة للون الأصلي
+                    errorMsg.style.display = 'block';
+                    // اهتزاز الحقول (اختياري)
+                    document.querySelector('.login-box').classList.add('shake');
+                }
+            }, 1500); // الانتظار 1.5 ثانية
+        }
+    </script>
+
+</body>
+</html>
