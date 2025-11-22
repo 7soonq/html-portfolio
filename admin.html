@@ -474,17 +474,18 @@
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('open');
         }
-          function logout() {
-    // 1. إظهار رسالة تأكيد (اختياري لتحسين التجربة)
-           if (confirm("هل أنت متأكد أنك تريد تسجيل الخروج من النظام؟")) {
+         // وظيفة تسجيل الخروج
+        function logout() {
+            // 1. إظهار رسالة تأكيد (اختياري لتحسين التجربة)
+            if (confirm("هل أنت متأكد أنك تريد تسجيل الخروج من النظام؟")) {
         
-        // 2. محاكاة مسح بيانات الجلسة (إذا كان هناك تخزين محلي)
-        // localStorage.removeItem('userToken'); 
+            // 2. محاكاة مسح بيانات الجلسة (إذا كان هناك تخزين محلي)
+            // localStorage.removeItem('userToken'); 
 
-        // 3. التوجيه إلى صفحة الدخول
-            window.location.href = 'login.html';
-       }
-                
+            // 3. التوجيه إلى صفحة الدخول
+                window.location.href = 'login.html';
+            }
+        }
     </script>
 </body>
 </html>
