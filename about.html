@@ -1,270 +1,515 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>استبانة تسجيل مستفيد</title>
-  <style>
-    :root {
-      --bg: #f4f6f9;
-      --card: #ffffff;
-      --accent: #2563eb;
-      --accent-light: #dbeafe;
-      --text-dark: #1e293b;
-      --text-light: #64748b;
-      --radius: 14px;
-      --shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جمعية مسكن للإسكان التنموي | الرئيسية</title>
+    <!-- استدعاء خط Tajawal من Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- متغيرات الألوان (الهوية البصرية) --- */
+        :root {
+            --primary-color: #00675B;   /* الأخضر الغامق - الثقة */
+            --secondary-color: #8CC63F; /* الأخضر الفاتح - النماء */
+            --accent-color: #F39C12;    /* البرتقالي - الدعوة للإجراء */
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
 
-    body {
-      margin: 0;
-      font-family: "Tajawal", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text-dark);
-      padding: 24px;
-    }
+        /* --- التنسيقات العامة --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
 
-    .card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 32px;
-      box-shadow: var(--shadow);
-      animation: fadeIn 0.4s ease;
-    }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+        /* --- الأزرار --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            border: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-    h1 {
-      margin: 0 0 16px;
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--accent);
-    }
+        .btn:hover { transform: translateY(-2px); }
 
-    .lead {
-      margin-bottom: 25px;
-      color: var(--text-light);
-      font-size: 16px;
-    }
+        .btn-accent {
+            background-color: var(--accent-color);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(243, 156, 18, 0.3);
+        }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      font-size: 15px;
-    }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
 
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      border-radius: var(--radius);
-      border: 1px solid #e2e8f0;
-      background: #f8fafc;
-      font-size: 15px;
-      transition: 0.2s;
-    }
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--accent);
-      background: #fff;
-      outline: none;
-      box-shadow: 0 0 0 3px var(--accent-light);
-    }
+        /* --- الهيدر (Header) --- */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
 
-    .row {
-      display: flex;
-      gap: 14px;
-      flex-direction: row-reverse;
-    }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .col { flex: 1; }
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    .section { margin-bottom: 25px; }
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-start;
-    }
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
 
-    button {
-      padding: 12px 20px;
-      border-radius: var(--radius);
-      border: none;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
-      transition: 0.2s;
-    }
+        .nav-links a:hover { color: var(--primary-color); }
 
-    button.primary {
-      background: var(--accent);
-      color: #fff;
-    }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
 
-    button.primary:hover { background: #1d4ed8; }
+        .mobile-menu-btn { display: none; font-size: 24px; cursor: pointer; }
 
-    button.secondary {
-      background: #e2e8f0;
-      color: var(--text-dark);
-    }
+        /* --- قسم البنر الرئيسي (Hero) --- */
+        .hero {
+            position: relative;
+            height: 600px;
+            background: linear-gradient(rgba(0, 50, 44, 0.7), rgba(0, 50, 44, 0.5)), url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            text-align: center;
+        }
 
-    button.secondary:hover { background: #cbd5e1; }
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-    /* Progress Bar */
-    .progress {
-      height: 10px;
-      background: #e2e8f0;
-      border-radius: var(--radius);
-      margin-bottom: 25px;
-      overflow: hidden;
-    }
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: var(--accent);
-      transition: width 0.4s ease;
-    }
-  </style>
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* --- لوحة الأرقام (Stats) --- */
+        .stats-section {
+            background-color: var(--primary-color);
+            padding: 60px 0;
+            color: var(--white);
+            margin-top: -50px; /* تداخل جمالي */
+            position: relative;
+            z-index: 10;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-item h3 { font-size: 2.5rem; font-weight: 800; margin-bottom: 5px; }
+        .stat-item p { font-size: 1rem; opacity: 0.8; }
+
+        /* --- المشاريع (Projects) --- */
+        .section-padding { padding: 80px 0; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-header h2 { font-size: 2.5rem; color: var(--primary-color); margin-bottom: 15px; }
+        .section-header p { color: var(--text-light); max-width: 600px; margin: 0 auto; }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .project-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .project-card:hover { box-shadow: var(--shadow-md); transform: translateY(-5px); }
+
+        .card-img {
+            height: 220px;
+            background-color: #ddd;
+            position: relative;
+        }
+        
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .card-body { padding: 25px; }
+        .card-body h3 { margin-bottom: 10px; color: var(--text-dark); }
+        .card-body p { color: var(--text-light); font-size: 0.9rem; margin-bottom: 20px; }
+
+        /* شريط التقدم */
+        .progress-container {
+            background: #E5E7EB;
+            border-radius: 10px;
+            height: 10px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--secondary-color);
+            border-radius: 10px;
+        }
+
+        .fund-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        .amount-remaining { color: var(--accent-color); }
+
+        /* --- من نحن (About) --- */
+        .about-section { background-color: var(--white); }
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .about-text { flex: 1; }
+        .about-image { flex: 1; border-radius: var(--radius); overflow: hidden; }
+
+        /* --- الفوتر (Footer) --- */
+        footer {
+            background-color: #111827;
+            color: #D1D5DB;
+            padding: 60px 0 20px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { color: var(--white); margin-bottom: 20px; font-size: 1.2rem; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a:hover { color: var(--secondary-color); }
+        .copyright { text-align: center; border-top: 1px solid #374151; padding-top: 20px; font-size: 0.9rem; }
+
+        /* --- التجاوب مع الجوال (Mobile Responsive) --- */
+        @media (max-width: 768px) {
+            .nav-links { display: none; } /* يمكن إضافة جافاسكربت للقائمة */
+            .mobile-menu-btn { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .stats-section { margin-top: 0; border-radius: 0; }
+            .about-container { flex-direction: column; }
+            .header-actions .btn { display: none; } /* إخفاء الزر الثانوي في الجوال */
+            .header-actions .btn-accent { display: block; padding: 8px 15px; font-size: 0.9rem; }
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div class="card">
 
-      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-      <h1>استبانة تسجيل مستفيد</h1>
-      <p class="lead">املأ البيانات المطلوبة خطوة بخطوة.</p>
-
-      <form id="multiForm">
-        <!-- STEP 1 -->
-        <div class="step" id="step1">
-          <h2>البيانات الأساسية</h2>
-
-          <div class="section">
-            <label>الاسم الكامل</label>
-            <input type="text" placeholder="أدخل الاسم" />
-          </div>
-
-          <div class="row section">
-            <div class="col">
-              <label>نوع الجنس</label>
-              <select>
-                <option value="">اختر</option>
-                <option value="male">ذكر</option>
-                <option value="female">أنثى</option>
-              </select>
+    <!-- شريط الترويسة -->
+    <header>
+        <div class="container nav-container">
+            <div class="logo">
+                <!-- شعار افتراضي نصي -->
+                <span style="color:var(--primary-color)">مسكن</span>
+                <span style="color:var(--secondary-color)">للاسكان التنموي</span>
             </div>
-            <div class="col">
-              <label>تاريخ الميلاد</label>
-              <input type="date" />
+            
+            <ul class="nav-links">
+                <li><a href="#">الرئيسية</a></li>
+                <li><a href="#">عن الجمعية</a></li>
+                <li><a href="#">المشاريع</a></li>
+                <li><a href="#">خدمات المستفيدين</a></li>
+                <li><a href="#">المركز الإعلامي</a></li>
+            </ul>
+
+            <div class="header-actions">
+                <a href="#" class="btn btn-outline">تسجيل دخول</a>
+                <a href="#" class="btn btn-accent">تبرع الآن</a>
+                <div class="mobile-menu-btn">☰</div>
             </div>
-          </div>
-
-          <div class="actions">
-            <button type="button" class="primary" onclick="nextStep()">التالي</button>
-          </div>
         </div>
+    </header>
 
-        <!-- STEP 2 -->
-        <div class="step hidden" id="step2">
-          <h2>الدخل</h2>
-
-          <div class="section">
-            <label>الدخل الشهري</label>
-            <input type="text" placeholder="مثال: 3000" />
-          </div>
-
-          <div class="actions">
-            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
-            <button type="button" class="primary" onclick="nextStep()">التالي</button>
-          </div>
+    <!-- البنر الرئيسي -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>حلول إسكانية.. <br>للأسر الأشد حاجة</h1>
+            <p>نسعى لتوفير حياة كريمة ومستقرة للأسر المحتاجة من خلال حلول إسكانية مستدامة ومبتكرة.</p>
+            <a href="#" class="btn btn-accent" style="font-size: 1.2rem; padding: 15px 40px;">ساهم في تأمين مسكن</a>
         </div>
+    </section>
 
-        <!-- STEP 3 -->
-        <div class="step hidden" id="step3">
-          <h2>الممتلكات</h2>
-
-          <div class="section">
-            <label>عدد السيارات</label>
-            <input type="number" />
-          </div>
-
-          <div class="actions">
-            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
-            <button type="button" class="primary" onclick="nextStep()">التالي</button>
-          </div>
-        </div>
-
-        <!-- STEP 4 -->
-        <div class="step hidden" id="step4">
-          <h2>بيانات أفراد الأسرة</h2>
-
-          <div class="section">
-            <label>عدد أفراد الأسرة</label>
-            <input type="number" />
-          </div>
-
-          <div class="actions">
-            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
-            <button type="button" class="primary" onclick="nextStep()">التالي</button>
-          </div>
-        </div>
-
-        <!-- STEP 5 -->
-        <div class="step hidden" id="step5">
-          <h2>الحالة السكنية</h2>
-
-          <div class="section">
-            <label>وصف حالة المنزل</label>
-            <textarea rows="4" placeholder="اكتب وصف الحالة"></textarea>
-          </div>
-
-          <div class="actions">
-            <button type="button" class="secondary" onclick="prevStep()">السابق</button>
-            <button type="submit" class="primary">إرسال</button>
-          </div>
-        </div>
-      </form>
-
+    <!-- لوحة الأرقام -->
+    <div class="container">
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>+1,200</h3>
+                    <p>مستفيد تم تسكينهم</p>
+                </div>
+                <div class="stat-item">
+                    <h3>45</h3>
+                    <p>مشروع منجز</p>
+                </div>
+                <div class="stat-item">
+                    <h3>+300</h3>
+                    <p>متطوع نشط</p>
+                </div>
+                <div class="stat-item">
+                    <h3>98%</h3>
+                    <p>نسبة رضا المستفيدين</p>
+                </div>
+            </div>
+        </section>
     </div>
-  </div>
 
-<script>
-  let step = 1;
-  const totalSteps = 5;
+    <!-- المشاريع العاجلة -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>فرص التبرع العاجلة</h2>
+                <p>مساهمتك تصنع فرقاً حقيقياً في حياة أسرة وتمنحهم الأمان.</p>
+            </div>
 
-  function showStep(n) {
-    document.querySelectorAll('.step').forEach((s) => s.classList.add('hidden'));
-    document.getElementById('step' + n).classList.remove('hidden');
+            <div class="projects-grid">
+                <!-- بطاقة 1 -->
+                <div class="project-card">
+                    <div class="card-img">
+                        <span class="badge">زكاة</span>
+                        <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&auto=format&fit=crop&w=1065&q=80" alt="منزل">
+                    </div>
+                    <div class="card-body">
+                        <h3>ترميم منزل الأرملة "أم خالد"</h3>
+                        <p>تعيش الأسرة في منزل متهالك يحتاج لترميم عاجل للسقف والكهرباء.</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 70%;"></div>
+                        </div>
+                        <div class="fund-details">
+                            <span>تم جمع: 70%</span>
+                            <span class="amount-remaining">باقي: 15,000 ر.س</span>
+                        </div>
 
-    const progress = (n / totalSteps) * 100;
-    document.getElementById('progressBar').style.width = progress + '%';
-  }
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-accent" style="flex:1">تبرع الآن</button>
+                            <button class="btn btn-outline">تفاصيل</button>
+                        </div>
+                    </div>
+                </div>
 
-  function nextStep() {
-    if (step < totalSteps) {
-      step++;
-      showStep(step);
-    }
-  }
+                <!-- بطاقة 2 -->
+                <div class="project-card">
+                    <div class="card-img">
+                        <span class="badge">صدقة جارية</span>
+                        <img src="https://images.unsplash.com/photo-1460317442991-0ec209397118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="بناء">
+                    </div>
+                    <div class="card-body">
+                        <h3>مشروع "نُزل" السكني</h3>
+                        <p>مشروع بناء مجمع سكني يضم 10 وحدات للأسر الضمانية.</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 45%;"></div>
+                        </div>
+                        <div class="fund-details">
+                            <span>تم جمع: 45%</span>
+                            <span class="amount-remaining">باقي: 250,000 ر.س</span>
+                        </div>
 
-  function prevStep() {
-    if (step > 1) {
-      step--;
-      showStep(step);
-    }
-  }
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-accent" style="flex:1">تبرع الآن</button>
+                            <button class="btn btn-outline">تفاصيل</button>
+                        </div>
+                    </div>
+                </div>
 
-  showStep(step);
-</script>
+                <!-- بطاقة 3 -->
+                <div class="project-card">
+                    <div class="card-img">
+                        <span class="badge">إيجار</span>
+                        <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="أسرة">
+                    </div>
+                    <div class="card-body">
+                        <h3>سداد إيجار أسرة متعففة</h3>
+                        <p>أسرة مكونة من 6 أفراد مهددة بالطرد لعدم القدرة على السداد.</p>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar" style="width: 90%;"></div>
+                        </div>
+                        <div class="fund-details">
+                            <span>تم جمع: 90%</span>
+                            <span class="amount-remaining">باقي: 2,000 ر.س</span>
+                        </div>
+
+                        <div style="display:flex; gap:10px;">
+                            <button class="btn btn-accent" style="flex:1">تبرع الآن</button>
+                            <button class="btn btn-outline">تفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align:center; margin-top:40px;">
+                <a href="#" class="btn btn-primary">عرض جميع المشاريع</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- نبذة عن الجمعية -->
+    <section class="section-padding about-section">
+        <div class="container about-container">
+            <div class="about-text">
+                <h4 style="color:var(--secondary-color); font-weight:bold;">من نحن</h4>
+                <h2 style="font-size:2.5rem; color:var(--primary-color); margin-bottom:20px;">شريكك الموثوق في الخير</h2>
+                <p style="margin-bottom:20px; color:#555;">
+                    جمعية مسكن للإسكان التنموي هي جمعية أهلية مسجلة، تهدف لتقديم حلول سكنية تنموية للأسر الأشد حاجة، وتمكينهم من الانتقال من الرعوية إلى التنموية عبر برامج مستدامة.
+                </p>
+                <ul style="margin-bottom:30px; display:grid; gap:10px;">
+                    <li>✅ مسجلة رسمياً لدى المركز الوطني.</li>
+                    <li>✅ شفافية عالية في التقارير المالية.</li>
+                    <li>✅ فريق عمل محترف ومتخصص.</li>
+                </ul>
+                <a href="#" class="btn btn-outline">اقرأ المزيد عنا</a>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1591382696684-38c427c7547a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="فريق مسكن">
+            </div>
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>جمعية مسكن</h4>
+                    <p>نسعى لتمكين الأسر من خلال السكن.</p>
+                    <div style="margin-top:20px;">
+                        <!-- أيقونات تواصل اجتماعي وهمية -->
+                        <span style="margin-left:10px; cursor:pointer;">🐦</span>
+                        <span style="margin-left:10px; cursor:pointer;">📸</span>
+                        <span style="margin-left:10px; cursor:pointer;">▶️</span>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#">عن الجمعية</a></li>
+                        <li><a href="#">المشاريع</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li>📞 920000000</li>
+                        <li>📧 info@maskan.org.sa</li>
+                        <li>📍 المملكة العربية السعودية</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>جميع الحقوق محفوظة © جمعية مسكن للإسكان التنموي 2023</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // كود بسيط لتشغيل القائمة في الجوال
+        const menuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuBtn.addEventListener('click', () => {
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                navLinks.style.display = 'flex';
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '70px';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.background = 'white';
+                navLinks.style.padding = '20px';
+                navLinks.style.boxShadow = '0 5px 5px rgba(0,0,0,0.1)';
+            }
+        });
+    </script>
 </body>
 </html>
