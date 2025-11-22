@@ -50,6 +50,26 @@
             background-color: rgba(0,0,0,0.1);
         }
 
+           /* تنسيق زر الخروج */
+         .logout-btn {
+             background: transparent;
+             border: none;
+             color: #EF4444; /* لون أحمر للدلالة على الخروج */
+             font-size: 1.2rem;
+             cursor: pointer;
+             padding: 8px;
+             border-radius: 50%;
+             transition: 0.3s;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .logout-btn:hover {
+             background-color: rgba(239, 68, 68, 0.1);
+             transform: scale(1.1); /* تكبير بسيط عند التحويم */
+         }
+
         .menu { flex: 1; padding-top: 20px; overflow-y: auto; }
         
         .menu-item {
@@ -207,14 +227,18 @@
                 <i class="fas fa-cog"></i> الإعدادات
             </a>
         </nav>
-        <div class="user-profile">
-            <div class="user-avatar">أ</div>
-            <div>
-                <div style="font-weight: bold;">أحمد محمد</div>
-                <div style="font-size: 0.8rem; opacity: 0.7;">مدير النظام</div>
-            </div>
-        </div>
-    </aside>
+        <!-- هذا الكود يوضع في أسفل القائمة الجانبية بدلاً من الكود القديم -->
+<div class="user-profile">
+    <div class="user-avatar">أ</div>
+    <div style="flex-grow: 1;"> <!-- تمدد ليأخذ المساحة -->
+        <div style="font-weight: bold;">أحمد محمد</div>
+        <div style="font-size: 0.8rem; opacity: 0.7;">مدير النظام</div>
+    </div>
+    <!-- زر تسجيل الخروج الجديد -->
+    <button onclick="logout()" class="logout-btn" title="تسجيل خروج">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+</div>
 
     <!-- المحتوى الرئيسي -->
     <main>
@@ -431,6 +455,22 @@
 
     <script>
         // وظيفة التبديل بين التبويبات
+        
+        
+        // وظيفة تسجيل الخروج
+function logout() {
+    // 1. إظهار رسالة تأكيد (اختياري لتحسين التجربة)
+    if (confirm("هل أنت متأكد أنك تريد تسجيل الخروج من النظام؟")) {
+        
+        // 2. محاكاة مسح بيانات الجلسة (إذا كان هناك تخزين محلي)
+        // localStorage.removeItem('userToken'); 
+
+        // 3. التوجيه إلى صفحة الدخول
+        window.location.href = 'login.html';
+    }
+}
+        
+        
         function switchTab(tabId, element) {
             // إخفاء جميع المحتويات
             document.querySelectorAll('.tab-content').forEach(content => {
