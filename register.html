@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل مستفيد جديد | جمعية مسكن</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- نفس متغيرات الهوية البصرية للصفحة الرئيسية لضمان التوافق --- */
+        :root {
+            --primary-color: #00675B;
+            --secondary-color: #8CC63F;
+            --accent-color: #F39C12;
+            --text-dark: #1F2937;
+            --text-light: #6B7280;
+            --bg-light: #F9FAFB;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --radius: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', sans-serif; background-color: var(--bg-light); color: var(--text-dark); }
+        
+        /* --- إعادة استخدام الهيدر (نسخة مبسطة) --- */
+        header { background-color: var(--white); box-shadow: var(--shadow-sm); padding: 15px 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--primary-color); text-decoration: none; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; transition: 0.3s; }
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-accent { background: var(--accent-color); color: white; }
+        .btn-outline { border: 1px solid #ccc; background: white; color: var(--text-dark); }
+        .btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+        /* --- تصميم الصفحة الداخلية --- */
+        .page-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-header h1 { font-size: 2rem; margin-bottom: 10px; }
+        .page-header p { opacity: 0.8; }
+
+        /* --- تخطيط المحتوى (Grid) --- */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr; /* الفورم يأخذ مساحة أكبر */
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        /* --- صندوق النموذج (Form Card) --- */
+        .form-card {
+            background: white;
+            padding: 40px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- شريط الخطوات (Stepper) --- */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+        .step {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            width: 33.33%;
+        }
+        .step-circle {
+            width: 35px;
+            height: 35px;
+            background: #e5e7eb;
+            color: var(--text-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .step.active .step-circle {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 0 5px rgba(0, 103, 91, 0.2);
+        }
+        .step.completed .step-circle {
+            background: var(--secondary-color);
+            color: white;
+        }
+        .step-title { font-size: 0.9rem; font-weight: 500; color: var(--text-light); }
+        .step.active .step-title { color: var(--primary-color); font-weight: 700; }
+
+        /* --- حقول الإدخال --- */
+        .form-group { margin-bottom: 20px; }
+        .form-label { display: block; margin-bottom: 8px; font-weight: 500; color: var(--text-dark); }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 103, 91, 0.1);
+        }
+        
+        /* إخفاء واظهار خطوات الفورم */
+        .form-step { display: none; animation: fadeIn 0.5s; }
+        .form-step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* --- صندوق المساعدة الجانبي (Sidebar) --- */
+        .info-card {
+            background: #F0FDF4; /* خلفية خضراء فاتحة جداً */
+            border: 1px solid #BBF7D0;
+            padding: 30px;
+            border-radius: var(--radius);
+            height: fit-content;
+        }
+        .info-card h3 { color: var(--primary-color); margin-bottom: 15px; }
+        .info-list { list-style: none; }
+        .info-list li {
+            margin-bottom: 12px;
+            padding-right: 20px;
+            position: relative;
+            font-size: 0.95rem;
+            color: #374151;
+        }
+        .info-list li::before {
+            content: '✔';
+            color: var(--secondary-color);
+            position: absolute;
+            right: 0;
+            font-weight: bold;
+        }
+
+        /* --- رفع الملفات --- */
+        .file-upload {
+            border: 2px dashed #d1d5db;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .file-upload:hover { border-color: var(--primary-color); background: #f9f9f9; }
+
+        /* --- الاستجابة للجوال --- */
+        @media (max-width: 768px) {
+            .content-grid { grid-template-columns: 1fr; }
+            .info-card { order: -1; margin-bottom: 20px; } /* وضع التعليمات في الأعلى في الجوال */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- هيدر مبسط -->
+    <header>
+        <div class="container nav-container">
+            <a href="maskan.html" class="logo">مسكن</a> <!-- رابط للعودة للرئيسية -->
+            <div>
+                <a href="maskan.html" class="btn btn-outline" style="border:none;">العودة للرئيسية</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- عنوان الصفحة -->
+    <div class="page-header">
+        <div class="container">
+            <h1>بوابة تسجيل المستفيدين</h1>
+            <p>نحن هنا لمساعدتك. يرجى تعبئة البيانات بدقة لضمان دراسة طلبك.</p>
+        </div>
+    </div>
+
+    <div class="container content-grid">
+        
+        <!-- النموذج الرئيسي -->
+        <div class="form-card">
+            
+            <!-- شريط الخطوات -->
+            <div class="stepper">
+                <div class="step active" id="step1-indicator">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">البيانات الشخصية</div>
+                </div>
+                <div class="step" id="step2-indicator">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">الوضع السكني</div>
+                </div>
+                <div class="step" id="step3-indicator">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">المرفقات</div>
+                </div>
+            </div>
+
+            <form id="registrationForm" onsubmit="return false;">
+                
+                <!-- الخطوة 1: البيانات الشخصية -->
+                <div class="form-step active" id="step1">
+                    <div class="form-group">
+                        <label class="form-label">الاسم الرباعي</label>
+                        <input type="text" class="form-control" placeholder="كما هو مدون في الهوية الوطنية">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group">
+                            <label class="form-label">رقم الهوية / الإقامة</label>
+                            <input type="number" class="form-control" placeholder="10xxxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">رقم الجوال</label>
+                            <input type="tel" class="form-control" placeholder="05xxxxxxxxx">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">الحالة الاجتماعية</label>
+                        <select class="form-control">
+                            <option value="">اختر الحالة...</option>
+                            <option value="married">متزوج/ـة</option>
+                            <option value="widow">أرمل/ـة</option>
+                            <option value="divorced">مطلق/ـة</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions" style="justify-content: flex-end;">
+                        <button class="btn btn-primary" onclick="nextStep(2)">التالي: الوضع السكني</button>
+                    </div>
+                </div>
+
+                <!-- الخطوة 2: الوضع السكني والمالي -->
+                <div class="form-step" id="step2">
+                    <div class="form-group">
+                        <label class="form-label">عدد أفراد الأسرة (شامل مقدم الطلب)</label>
+                        <input type="number" class="form-control" min="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">نوع السكن الحالي</label>
+                        <select class="form-control">
+                            <option value="rent">إيجار</option>
+                            <option value="relative">سكن مع أقارب</option>
+                            <option value="none">لا يوجد مأوى</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">قيمة الإيجار السنوي (ريال)</label>
+                        <input type="number" class="form-control" placeholder="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">إجمالي دخل الأسرة الشهري (ريال)</label>
+                        <input type="number" class="form-control" placeholder="شامل حساب المواطن والضمان">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-outline" onclick="prevStep(1)">السابق</button>
+                        <button class="btn btn-primary" onclick="nextStep(3)">التالي: المرفقات</button>
+                    </div>
+                </div>
+
+                <!-- الخطوة 3: المرفقات -->
+                <div class="form-step" id="step3">
+                    <div class="form-group">
+                        <label class="form-label">صورة الهوية الوطنية / كرت العائلة</label>
+                        <div class="file-upload">
+                            <span style="font-size:2rem;">📂</span>
+                            <p>اضغط هنا لرفع الملف أو اسحبه هنا</p>
+                            <input type="file" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">عقد الإيجار الإلكتروني (إن وجد)</label>
+                        <div class="file-upload">
+                            <span style="font-size:2rem;">📄</span>
+                            <p>اضغط هنا لرفع الملف أو اسحبه هنا</p>
+                            <input type="file" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" style="display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" style="width:20px; height:20px;">
+                            أتعهد بأن جميع البيانات المدخلة صحيحة وأتحمل المسؤولية القانونية.
+                        </label>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-outline" onclick="prevStep(2)">السابق</button>
+                        <button class="btn btn-accent" onclick="submitForm()">إرسال الطلب</button>
+                    </div>
+                </div>
+
+                <!-- رسالة النجاح (مخفية) -->
+                <div class="form-step" id="successMsg" style="text-align: center; padding: 40px 0;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">🎉</div>
+                    <h2 style="color: var(--primary-color);">تم استلام طلبك بنجاح!</h2>
+                    <p style="margin-bottom: 30px; color: var(--text-light);">رقم الطلب الخاص بك هو: <strong>#MSK-2023-892</strong><br>ستصلك رسالة نصية بحالة الطلب قريباً.</p>
+                    <a href="maskan.html" class="btn btn-outline">العودة للرئيسية</a>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- الشريط الجانبي: الشروط والتعليمات -->
+        <aside>
+            <div class="info-card">
+                <h3>📋 شروط التسجيل</h3>
+                <ul class="info-list">
+                    <li>أن تكون الأسرة سعودية الجنسية.</li>
+                    <li>إقامة الأسرة في نطاق خدمات الجمعية.</li>
+                    <li>عدم امتلاك أي عقار سكني.</li>
+                    <li>أن يكون المستفيد مسجلاً في الضمان الاجتماعي.</li>
+                    <li>إرفاق عقد إيجار إلكتروني ساري المفعول (لطلبات دعم الإيجار).</li>
+                </ul>
+
+                <hr style="border:0; border-top:1px solid #BBF7D0; margin: 20px 0;">
+
+                <h3>📞 هل تحتاج مساعدة؟</h3>
+                <p style="font-size:0.9rem; color:#555; margin-bottom:10px;">إذا واجهت صعوبة في التسجيل، تواصل معنا:</p>
+                <a href="#" style="color:var(--primary-color); font-weight:bold; text-decoration:none; display:block; margin-bottom:5px;">واتساب: 0500000000</a>
+                <a href="#" style="color:var(--primary-color); font-weight:bold; text-decoration:none;">رقم موحد: 920000000</a>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- جافاسكربت للتحكم في التنقل بين الخطوات -->
+    <script>
+        function showStep(stepNumber) {
+            // إخفاء جميع الخطوات
+            document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+            // إظهار الخطوة المطلوبة
+            document.getElementById('step' + stepNumber).classList.add('active');
+            
+            // تحديث شريط التقدم (الدوائر العلوية)
+            updateStepper(stepNumber);
+        }
+
+        function updateStepper(stepNumber) {
+            // تصفير الجميع
+            document.querySelectorAll('.step').forEach(el => {
+                el.classList.remove('active', 'completed');
+            });
+
+            // تلوين الخطوات السابقة كـ "مكتملة" والحالية كـ "نشطة"
+            for (let i = 1; i <= 3; i++) {
+                const stepEl = document.getElementById('step' + i + '-indicator');
+                if (i < stepNumber) {
+                    stepEl.classList.add('completed');
+                } else if (i === stepNumber) {
+                    stepEl.classList.add('active');
+                }
+            }
+        }
+
+        function nextStep(step) {
+            // هنا يمكن إضافة كود للتحقق من صحة البيانات (Validation) قبل الانتقال
+            showStep(step);
+            window.scrollTo(0, 0); // الصعود لأعلى الصفحة
+        }
+
+        function prevStep(step) {
+            showStep(step);
+            window.scrollTo(0, 0);
+        }
+
+        function submitForm() {
+            // محاكاة عملية الإرسال
+            const btn = document.querySelector('.btn-accent');
+            btn.innerHTML = 'جاري الإرسال...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // إخفاء النموذج وإظهار رسالة النجاح
+                document.querySelectorAll('.form-step').forEach(el => el.classList.remove('active'));
+                document.querySelector('.stepper').style.display = 'none'; // إخفاء الشريط
+                document.getElementById('successMsg').classList.add('active');
+                window.scrollTo(0, 0);
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
